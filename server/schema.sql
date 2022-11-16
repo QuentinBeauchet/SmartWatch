@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : db
--- Généré le : sam. 12 nov. 2022 à 14:47
+-- Généré le : mer. 16 nov. 2022 à 03:34
 -- Version du serveur : 10.9.4-MariaDB-1:10.9.4+maria~ubu2204
 -- Version de PHP : 8.0.19
 
@@ -23,7 +23,123 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
+--
+-- Structure de la table `events`
+--
 
+CREATE TABLE `events` (
+  `id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `latitude` decimal(10,7) NOT NULL,
+  `longitude` decimal(10,7) NOT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp(),
+  `comment` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `events`
+--
+
+INSERT INTO `events` (`id`, `type_id`, `user_id`, `latitude`, `longitude`, `date`, `comment`) VALUES
+(1, 1, 1, '43.6205100', '6.9698400', '2022-11-16 03:14:22', "It\'s bigger than the dog O_o you might want to check it out");
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `types`
+--
+
+CREATE TABLE `types` (
+  `id` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `types`
+--
+
+INSERT INTO `types` (`id`, `name`) VALUES
+(1, 'Poop'),
+(2, 'Worksite'),
+(3, 'Traffic jam');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `mac` varchar(12) NOT NULL,
+  `name` varchar(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `mac`, `name`) VALUES
+(1, '00D861D8BB48', 'PC Quentin');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `type_id` (`type_id`) USING BTREE;
+
+--
+-- Index pour la table `types`
+--
+ALTER TABLE `types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `events`
+--
+ALTER TABLE `events`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `types`
+--
+ALTER TABLE `types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `events`
+--
+ALTER TABLE `events`
+  ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`),
+  ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
