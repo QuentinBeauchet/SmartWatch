@@ -11,13 +11,11 @@ class Events extends Model {
         },
         type_id: {
           type: DataTypes.INTEGER,
-          length: 11,
-          allowNull: false,
+          foreignKey: true,
         },
         user_id: {
           type: DataTypes.INTEGER,
-          length: 11,
-          allowNull: false,
+          foreignKey: true,
         },
         latitude: {
           type: DataTypes.DECIMAL,
@@ -51,10 +49,10 @@ class Events extends Model {
 
   static associate(models) {
     this.belongsTo(models.Users, {
-      foreignKey: "user_id",
+      foreignKey: "id",
     });
     this.belongsTo(models.Types, {
-      foreignKey: "type_id",
+      foreignKey: "id",
     });
   }
 }

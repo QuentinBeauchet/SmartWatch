@@ -9,9 +9,9 @@ class Users extends Model {
           primaryKey: true,
           autoIncrement: true,
         },
-        mac: {
+        device_id: {
           type: DataTypes.STRING,
-          length: 12,
+          length: 16,
           allowNull: false,
         },
         name: {

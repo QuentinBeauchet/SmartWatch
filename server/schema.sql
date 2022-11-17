@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : db
--- Généré le : mer. 16 nov. 2022 à 03:34
+-- Généré le : jeu. 17 nov. 2022 à 02:30
 -- Version du serveur : 10.9.4-MariaDB-1:10.9.4+maria~ubu2204
 -- Version de PHP : 8.0.19
 
@@ -42,7 +42,8 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`id`, `type_id`, `user_id`, `latitude`, `longitude`, `date`, `comment`) VALUES
-(1, 1, 1, '43.6205100', '6.9698400', '2022-11-16 03:14:22', "It\'s bigger than the dog O_o you might want to check it out");
+(1, 1, 1, '43.6205100', '6.9698400', '2022-11-16 03:14:22', "It\'s bigger than the dog O_o you might want to check it out"),
+(3, 1, 4, '43.7101717', '7.2619517', '2022-11-17 02:20:04', 'Test Comment from Android Studio');
 
 -- --------------------------------------------------------
 
@@ -60,6 +61,7 @@ CREATE TABLE `types` (
 --
 
 INSERT INTO `types` (`id`, `name`) VALUES
+(0, 'Localisation'),
 (1, 'Poop'),
 (2, 'Worksite'),
 (3, 'Traffic jam');
@@ -72,7 +74,7 @@ INSERT INTO `types` (`id`, `name`) VALUES
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `mac` varchar(12) NOT NULL,
+  `device_id` varchar(16) NOT NULL,
   `name` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -80,8 +82,10 @@ CREATE TABLE `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `mac`, `name`) VALUES
-(1, '00D861D8BB48', 'PC Quentin');
+INSERT INTO `users` (`id`, `device_id`, `name`) VALUES
+(1, '00D861D8BB48', 'PC Quentin'),
+(2, '35468C7E147D', 'Jane'),
+(4, 'ced2e7e0cb52123a', 'sdk_gwear_x86');
 
 --
 -- Index pour les tables déchargées
@@ -115,19 +119,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `types`
 --
 ALTER TABLE `types`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées
