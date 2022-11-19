@@ -17,7 +17,7 @@ To be sure the server is running go to the address you got in the previous step 
 
 Open the folder `application` with `Android Studio` and then open `app/build.gradle`. You might need to change the address in the line:
 
-> buildConfigField "String", "API_URL", "\\"http://192.168.0.134:3000/api\\""
+> buildConfigField "String", "API_URL", "\\"http://192.168.0.134:3000/api\""
 
 with the ip address you got in step 1.
 
