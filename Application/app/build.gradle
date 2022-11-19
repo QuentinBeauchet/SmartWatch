@@ -7,13 +7,16 @@ android {
     namespace 'com.example.application'
     compileSdk 33
 
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
     defaultConfig {
         applicationId "com.example.application"
         minSdk 30
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
+        buildConfigField "String", "API_URL", "\"http://192.168.0.134:3000/api\""
     }
 
     buildTypes {

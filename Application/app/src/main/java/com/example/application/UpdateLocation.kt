@@ -12,10 +12,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.util.*
 
@@ -31,10 +28,10 @@ class UpdateLocation : Service() {
         private val LOG_TAG = UpdateLocation::class.java.simpleName
         private const val UPDATE_DELAY = 10000L
         private const val EVENT_TYPE = 0
-        private const val API_URL = "http://172.30.160.1:3000/api/events/add"
-        private var USER_ID : String? = null
+        private var USER_ID: String? = null
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("HardwareIds")
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Toast.makeText(this, "Starting automatic updates", Toast.LENGTH_SHORT).show()
@@ -98,20 +95,23 @@ class UpdateLocation : Service() {
     }
 
     private fun postToAPI(latitude: Double, longitude: Double) {
-        if(requestsQueue != null){
+        if (requestsQueue != null) {
             val data = JSONObject()
             data.put("user_id", USER_ID)
             data.put("type_id", EVENT_TYPE)
             data.put("latitude", latitude)
             data.put("longitude", longitude)
-            data.put("comment","Test Comment from Android Studio")
+            data.put("comment", "Test Comment from Android Studio")
 
             val request = JsonObjectRequest(
-                Request.Method.POST, API_URL, data,
-                {response ->
-                    Log.d(LOG_TAG, "Location update status: $response")
+                Request.Method.POST, "${BuildConfig.API_URL}/events/add", data,
+                { response ->
+                    Log.d(
+                        LOG_TAG,
+                        "Location update status was ${if (response.get("success") as Boolean) "successfully sent" else "malformed"}"
+                    )
                 }
-            ) { error -> error.printStackTrace() }
+            ) { Log.w(LOG_TAG, "The API is not available for location update") }
 
             requestsQueue?.add(request)
         }

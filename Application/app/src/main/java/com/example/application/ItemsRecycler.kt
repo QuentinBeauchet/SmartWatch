@@ -6,14 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.application.databinding.MenuBinding
 
-class Item(var text : String,var img : Drawable?){
-
-}
+class Item(var text : String,var img : Drawable?)
 
 
-
-
-class ItemsAdapter(var icons : ArrayList<Item>) : RecyclerView.Adapter<ItemsViewHolder>() {
+class ItemsAdapter(private var icons : ArrayList<Item>) : RecyclerView.Adapter<ItemsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -32,8 +28,4 @@ class ItemsAdapter(var icons : ArrayList<Item>) : RecyclerView.Adapter<ItemsView
     }
 }
 
-class ItemsViewHolder(val bindingMenu: MenuBinding) : RecyclerView.ViewHolder(bindingMenu.root){
-
-
-
-}
+class ItemsViewHolder(val bindingMenu: MenuBinding) : RecyclerView.ViewHolder(bindingMenu.root)
