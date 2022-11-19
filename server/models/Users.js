@@ -30,7 +30,9 @@ class Users extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Events);
+    this.hasMany(models.Events, {
+      foreignKey: "user_id",
+    });
   }
 }
 

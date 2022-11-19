@@ -25,7 +25,9 @@ class Types extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Events);
+    this.hasMany(models.Events, {
+      foreignKey: "type_id",
+    });
   }
 }
 

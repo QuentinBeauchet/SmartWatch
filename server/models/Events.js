@@ -11,11 +11,9 @@ class Events extends Model {
         },
         type_id: {
           type: DataTypes.INTEGER,
-          foreignKey: true,
         },
         user_id: {
           type: DataTypes.INTEGER,
-          foreignKey: true,
         },
         latitude: {
           type: DataTypes.DECIMAL,

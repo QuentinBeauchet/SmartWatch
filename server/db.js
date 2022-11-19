@@ -1,7 +1,10 @@
 const { Sequelize } = require("sequelize");
 const { initModels, Events, Types, Users } = require("./models/Models");
 
-async function initdb() {
+/**
+ * Initialize Sequelize and the models.
+ */
+async function initDB() {
   const sequelize = new Sequelize("watch", "root", "root", {
     host: "localhost",
     dialect: "mariadb",
@@ -22,9 +25,7 @@ async function initdb() {
  * @param {*} res
  */
 function getAllEvents(req, res) {
-  Events.findAll().then((events) => {
-    res.status(200).json(events);
-  });
+  Events.findAll().then((events) => res.status(200).json(events));
 }
 
 /**
@@ -34,7 +35,7 @@ function getAllEvents(req, res) {
  */
 function addEvent(req, res) {
   let { user_id, type_id, latitude, longitude, comment } = req.body;
-  if (!(user_id && type_id && latitude && longitude && comment)) {
+  if (!(user_id && type_id && latitude && longitude)) {
     res.status(200).json({ success: false });
     return;
   }
@@ -42,6 +43,25 @@ function addEvent(req, res) {
   Events.create({ user_id, type_id, latitude, longitude, comment, date: Date.now() }).then(() => {
     res.status(200).json({ success: true });
   });
+}
+
+/**
+ * Delete the event with the id passed as parameter from the DB.
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+function deleteEvent(req, res) {
+  deleteFromId(req, res, Events);
+}
+
+/**
+ * Return all types of events.
+ * @param {*} req
+ * @param {*} res
+ */
+function getAllEventTypes(req, res) {
+  Types.findAll().then((types) => res.status(200).json(types));
 }
 
 /**
@@ -59,6 +79,16 @@ function addEventType(req, res) {
   Types.create({ name }).then(({ id }) => {
     res.status(200).json({ success: true, id });
   });
+}
+
+/**
+ * Delete the type of event with the id passed as parameter from the DB.
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+function deleteEventType(req, res) {
+  deleteFromId(req, res, Types);
 }
 
 /**
@@ -89,10 +119,54 @@ function connect(req, res) {
   });
 }
 
+/**
+ * Delete the user with the id passed as parameter from the DB.
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+function deleteUser(req, res) {
+  deleteFromId(req, res, Users);
+}
+
+/**
+ * Return all users.
+ * @param {*} req
+ * @param {*} res
+ */
+function getAllUsers(req, res) {
+  Users.findAll().then((users) => res.status(200).json(users));
+}
+
+/**
+ * Delete the row from the table with the id passed as parameter from the DB.
+ * @param {*} req
+ * @param {*} res
+ * @param {*} table
+ * @returns
+ */
+function deleteFromId(req, res, table) {
+  let id = req.params.id;
+  if (!Number.isInteger(Number(id))) {
+    res.status(200).json({ success: false });
+    return;
+  }
+  table
+    .destroy({
+      where: { id },
+    })
+    .then((nbr) => res.status(200).json({ success: nbr != 0 }));
+}
+
 module.exports = {
-  initdb,
-  getAllEvents,
-  addEvent,
+  initDB,
   connect,
+  addEvent,
   addEventType,
+  getAllEvents,
+  getAllEventTypes,
+  getAllUsers,
+  deleteEvent,
+  deleteEventType,
+  deleteUser,
 };
