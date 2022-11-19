@@ -8,16 +8,23 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.MotionEvent
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.MotionEventCompat
+import androidx.wear.widget.WearableLinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.application.databinding.ActivityMainBinding
 import org.json.JSONObject
 
+
 class MainActivity : Activity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var x = 0.0f
+    var icons = java.util.ArrayList<Item>()
 
     companion object {
         private val LOG_TAG = MainActivity::class.java.simpleName
@@ -100,6 +107,34 @@ class MainActivity : Activity() {
         ) { error -> error.printStackTrace() }
 
         requestsQueue.add(request)
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val longOfDrag = 150
+        when (MotionEventCompat.getActionMasked(event)) {
+            MotionEvent.ACTION_DOWN -> {
+                x = event.x
+            }
+            MotionEvent.ACTION_UP ->{
+                if (x-event.x >=longOfDrag){
+                    Log.d("Swipe","LEFT")
+
+                    binding.wearable.layoutManager = WearableLinearLayoutManager(this)
+                    binding.wearable.setHasFixedSize(true)
+                    binding.wearable.isEdgeItemsCenteringEnabled = true
+
+                    // Ajout des chips
+                    icons.add(Item("Police",ContextCompat.getDrawable(this,R.drawable.ic_launcher)))
+                    icons.add(Item("Accident",ContextCompat.getDrawable(this,R.drawable.ic_launcher)))
+
+                    // Lien entre WearableRecyclerView et RecyclerView grace a l'adapter
+                    val adapter = ItemsAdapter(icons)
+                    binding.wearable.adapter = adapter
+
+                }
+            }
+        }
+        return true
     }
 
 }
