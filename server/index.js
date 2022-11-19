@@ -1,10 +1,12 @@
 const express = require("express");
 var bodyParser = require("body-parser");
+var os = require("os");
 const DB = require("./db");
 const app = express();
 const port = 3000;
 
 app.use(express.static("public"));
+app.use("/api/assets", express.static("public/assets"));
 app.use(bodyParser.json());
 
 /********************************Routes********************************/
@@ -35,8 +37,19 @@ app.get("/api/types/:id/delete", DB.deleteEventType);
 
 /**********************************************************************/
 
+/**
+ * @returns The Network IP of the express server.
+ */
+const address = () => {
+  return (
+    Object.values(os.networkInterfaces()).flatMap((type) =>
+      type.filter(({ family, netmask }) => family == "IPv4" && netmask == "255.255.255.0")
+    )[0]?.address || "localhost"
+  );
+};
+
 DB.initDB().then(() => {
   app.listen(port, () => {
-    console.log(`\nServer listening on http://localhost:${port}`);
+    console.log(`\nServer listening on http://${address()}:${port}`);
   });
 });
