@@ -54,17 +54,18 @@ INSERT INTO `events` (`id`, `type_id`, `user_id`, `latitude`, `longitude`, `date
 CREATE TABLE `types` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL
+  `icon` varchar(512) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `types`
 --
 
-INSERT INTO `types` (`id`, `name`) VALUES
-(0, 'Localisation'),
-(1, 'Poop'),
-(2, 'Worksite'),
-(3, 'Traffic jam');
+INSERT INTO `types` (`id`, `name`, `icon`) VALUES
+(0, 'Localisation', '/assets/localisation.png'),
+(1, 'Poop', '/assets/poop.png'),
+(2, 'Worksite', '/assets/worksite.png'),
+(3, 'Traffic jam', '/assets/traffic-jam.png');
 
 -- --------------------------------------------------------
 

@@ -14,6 +14,11 @@ class Types extends Model {
           length: 64,
           allowNull: false,
         },
+        icon: {
+          type: DataTypes.STRING,
+          length: 512,
+          allowNull: false,
+        },
       },
       {
         sequelize: connection,
