@@ -1,15 +1,25 @@
 const express = require("express");
 var bodyParser = require("body-parser");
+const path = require("path");
 var os = require("os");
 const DB = require("./db");
+
 const app = express();
 const port = 3000;
 
+
+app.set("view engine", "html");
+app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use("/api/assets", express.static("public/assets"));
 app.use(bodyParser.json());
 
 /********************************Routes********************************/
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname+'/views/index.html'));
+});
+
 
 /**************Events**************/
 
