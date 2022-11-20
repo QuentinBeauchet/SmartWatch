@@ -47,10 +47,6 @@ class MainActivity : Activity() {
 
         Log.d(LOG_TAG, BuildConfig.API_URL)
 
-        menuBinding= MenuBinding.inflate(layoutInflater)
-        val menu = Menu(menuBinding)
-        menu.createListOfItems(this)
-
         checkPermissions()
         connectToAPI()
     }
@@ -136,6 +132,12 @@ class MainActivity : Activity() {
                 }
 
                 requestsQueue.stop()
+
+                Log.d("Event", eventTypes.toString())
+                menuBinding= MenuBinding.inflate(layoutInflater)
+                val menu = Menu(menuBinding,eventTypes)
+                menu.createListOfItems(this)
+
             }
         ) { Log.w(LOG_TAG, "The API is not available for types request") }
 
@@ -151,7 +153,6 @@ class MainActivity : Activity() {
             MotionEvent.ACTION_UP -> {
                 if (positionX - event.x >= longOfDrag) {
                     Log.d("Swipe", "LEFT")
-                    Log.d("Event", eventTypes.toString())
                     setContentView(menuBinding.root)
 
 
