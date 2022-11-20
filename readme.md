@@ -37,7 +37,9 @@ This error mean that the mariadb container is not ready yet and you should wait 
 #
 
 > error during connect: this error may indicate that the docker daemon is not running: Get "http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.24/containers/json?all=1&filters=%7B%22label%22%3A%7B%22com.docker.compose.project%3Dserver%22%3Atrue%7D%7D": open //./pipe/docker_engine: The system cannot find the file specified.
+  
+> Unable to connect to the database: SequelizeConnectionRefusedError: connect ECONNREFUSED 127.0.0.1:3306
 
-This error mean that docker in not running, to fix it simply start it.
+These errors mean that docker in not running, to fix it simply start it.
 
 # 
