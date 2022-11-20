@@ -4,7 +4,9 @@ Start `Docker` and then run:
 
 ```bash
 cd server
-npm start
+npm i
+npm run docker:build  #Build images and containers
+npm run docker:load   #Import .sql data into mariadb
 ```
 
 You should have the address of the api displayed in the console. Otherwise you will need to run `ipconfig` and look for your IPv4 address.
@@ -24,3 +26,11 @@ with the ip address you got in step 1.
 # Step 4
 
 You can run the application from `Android Studio` in the emulator and everything should be working as intented.
+
+# TroubleShooting
+
+> ERROR 2002 (HY000): Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)
+
+This error mean that the mariadb container is not ready yet and you should wait about 10s.
+
+#

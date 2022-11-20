@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `events`
 --
 
-CREATE TABLE `events` (
+CREATE TABLE IF NOT EXISTS `events` (
   `id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `events` (
 -- Déchargement des données de la table `events`
 --
 
-INSERT INTO `events` (`id`, `type_id`, `user_id`, `latitude`, `longitude`, `date`, `comment`) VALUES
+INSERT IGNORE INTO `events` (`id`, `type_id`, `user_id`, `latitude`, `longitude`, `date`, `comment`) VALUES
 (1, 1, 1, '43.6205100', '6.9698400', '2022-11-16 03:14:22', "It\'s bigger than the dog O_o you might want to check it out"),
 (3, 1, 4, '43.7101717', '7.2619517', '2022-11-17 02:20:04', 'Test Comment from Android Studio');
 
@@ -51,9 +51,9 @@ INSERT INTO `events` (`id`, `type_id`, `user_id`, `latitude`, `longitude`, `date
 -- Structure de la table `types`
 --
 
-CREATE TABLE `types` (
+CREATE TABLE IF NOT EXISTS `types` (
   `id` int(11) NOT NULL,
-  `name` varchar(64) NOT NULL
+  `name` varchar(64) NOT NULL,
   `icon` varchar(512) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -61,7 +61,7 @@ CREATE TABLE `types` (
 -- Déchargement des données de la table `types`
 --
 
-INSERT INTO `types` (`id`, `name`, `icon`) VALUES
+INSERT IGNORE INTO `types` (`id`, `name`, `icon`) VALUES
 (0, 'Localisation', '/assets/localisation.png'),
 (1, 'Poop', '/assets/poop.png'),
 (2, 'Worksite', '/assets/worksite.png'),
@@ -73,7 +73,7 @@ INSERT INTO `types` (`id`, `name`, `icon`) VALUES
 -- Structure de la table `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `device_id` varchar(16) NOT NULL,
   `name` varchar(128) NOT NULL
@@ -83,7 +83,7 @@ CREATE TABLE `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `device_id`, `name`) VALUES
+INSERT IGNORE INTO `users` (`id`, `device_id`, `name`) VALUES
 (1, '00D861D8BB48', 'PC Quentin'),
 (2, '35468C7E147D', 'Jane'),
 (4, 'ced2e7e0cb52123a', 'sdk_gwear_x86');
@@ -96,21 +96,21 @@ INSERT INTO `users` (`id`, `device_id`, `name`) VALUES
 -- Index pour la table `events`
 --
 ALTER TABLE `events`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `type_id` (`type_id`) USING BTREE;
+  ADD PRIMARY KEY IF NOT EXISTS (`id`),
+  ADD KEY IF NOT EXISTS `user_id` (`user_id`),
+  ADD KEY IF NOT EXISTS `type_id` (`type_id`) USING BTREE;
 
 --
 -- Index pour la table `types`
 --
 ALTER TABLE `types`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY IF NOT EXISTS (`id`);
 
 --
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY IF NOT EXISTS (`id`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -141,6 +141,11 @@ ALTER TABLE `users`
 --
 -- Contraintes pour la table `events`
 --
+
+ALTER TABLE `events`
+  DROP CONSTRAINT IF EXISTS `events_ibfk_1`,
+  DROP CONSTRAINT IF EXISTS `events_ibfk_2`;
+
 ALTER TABLE `events`
   ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`),
   ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);

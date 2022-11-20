@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "docker-compose up -d && node index.js"
+    "docker:build": "docker-compose up -d",
+    "predocker:load": "docker exec sw_db mariadb -uroot -proot -e \"CREATE DATABASE IF NOT EXISTS watch\"",
+    "docker:load": "docker exec -i sw_db mariadb -uroot -proot watch < schema.sql",
+    "clean": "docker rm -f sw_db sw_phpmyadmin ; docker rmi -f mariadb phpmyadmin/phpmyadmin ; docker volume rm server_sw_data",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
