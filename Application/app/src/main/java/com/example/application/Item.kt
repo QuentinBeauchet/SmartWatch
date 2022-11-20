@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.application.databinding.MenuBinding
+import com.example.application.databinding.MenuRecyclerBinding
 
 class Item(var text : String,var img : Drawable?)
 
@@ -13,7 +13,7 @@ class ItemsAdapter(private var icons : ArrayList<Item>) : RecyclerView.Adapter<I
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding: MenuBinding = MenuBinding.inflate(layoutInflater, parent, false)
+        val binding: MenuRecyclerBinding = MenuRecyclerBinding.inflate(layoutInflater, parent, false)
         return ItemsViewHolder(binding)
     }
 
@@ -28,4 +28,4 @@ class ItemsAdapter(private var icons : ArrayList<Item>) : RecyclerView.Adapter<I
     }
 }
 
-class ItemsViewHolder(val bindingMenu: MenuBinding) : RecyclerView.ViewHolder(bindingMenu.root)
+class ItemsViewHolder(val bindingMenu: MenuRecyclerBinding) : RecyclerView.ViewHolder(bindingMenu.root)

@@ -11,22 +11,21 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.wear.widget.WearableLinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.application.databinding.ActivityMainBinding
+import com.example.application.databinding.MenuBinding
 import org.json.JSONObject
 
 
 class MainActivity : Activity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private var x = 0.0f
-    private var icons = java.util.ArrayList<Item>()
+    lateinit var binding: ActivityMainBinding
+    lateinit var menuBinding: MenuBinding
+    private var positionX = 0.0f
     private var eventTypes = ArrayList<JSONObject>()
 
     companion object {
@@ -47,6 +46,10 @@ class MainActivity : Activity() {
         DEVICE_ID = Settings.Secure.getString(contentResolver, "android_id")
 
         Log.d(LOG_TAG, BuildConfig.API_URL)
+
+        menuBinding= MenuBinding.inflate(layoutInflater)
+        val menu = Menu(menuBinding)
+        menu.createListOfItems(this)
 
         checkPermissions()
         connectToAPI()
@@ -143,33 +146,14 @@ class MainActivity : Activity() {
         val longOfDrag = 150
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                x = event.x
+                positionX = event.x
             }
             MotionEvent.ACTION_UP -> {
-                if (x - event.x >= longOfDrag) {
+                if (positionX - event.x >= longOfDrag) {
                     Log.d("Swipe", "LEFT")
+                    Log.d("Event", eventTypes.toString())
+                    setContentView(menuBinding.root)
 
-                    binding.wearable.layoutManager = WearableLinearLayoutManager(this)
-                    binding.wearable.setHasFixedSize(true)
-                    binding.wearable.isEdgeItemsCenteringEnabled = true
-
-                    // Ajout des chips
-                    icons.add(
-                        Item(
-                            "Police",
-                            ContextCompat.getDrawable(this, R.drawable.ic_launcher)
-                        )
-                    )
-                    icons.add(
-                        Item(
-                            "Accident",
-                            ContextCompat.getDrawable(this, R.drawable.ic_launcher)
-                        )
-                    )
-
-                    // Lien entre WearableRecyclerView et RecyclerView grace a l'adapter
-                    val adapter = ItemsAdapter(icons)
-                    binding.wearable.adapter = adapter
 
                 }
             }
