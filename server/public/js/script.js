@@ -1,3 +1,11 @@
+var markers = [];
+function getMarkersList(){
+    $.get( "/getMarkers", function( data ) {
+        console.log(data);
+    });
+}
+
+
 $( document ).ready(function() {
     var map = L.map('map').setView([43.563476, 7.01651], 10);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -12,6 +20,6 @@ $( document ).ready(function() {
 
     addMarker(43.563476, 7.01651,'<p>Hello world!<br />This is a nice popup.</p>');
 
-
+    getMarkersList();
 });
 

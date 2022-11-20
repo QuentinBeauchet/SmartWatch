@@ -21,6 +21,13 @@ app.get('/', (req, res) => {
 });
 
 
+app.get("/getMarkers",function(req, res){
+    var obj = { id : 0, Content : "content " + 0 };
+    res.writeHead(200, {"Content-Type": "application/json"});
+    res.write(JSON.stringify(obj));
+    res.send();
+});
+
 /**************Events**************/
 
 app.get("/api/events", DB.getAllEvents);
