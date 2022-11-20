@@ -7,6 +7,7 @@ cd server
 npm i
 npm run docker:build  #Build images and containers
 npm run docker:load   #Import .sql data into mariadb
+npm start
 ```
 
 You should have the address of the api displayed in the console. Otherwise you will need to run `ipconfig` and look for your IPv4 address.
