@@ -35,3 +35,9 @@ You can run the application from `Android Studio` in the emulator and everything
 This error mean that the mariadb container is not ready yet and you should wait about 10s.
 
 #
+
+> error during connect: this error may indicate that the docker daemon is not running: Get "http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.24/containers/json?all=1&filters=%7B%22label%22%3A%7B%22com.docker.compose.project%3Dserver%22%3Atrue%7D%7D": open //./pipe/docker_engine: The system cannot find the file specified.
+
+This error mean that docker in not running, to fix it simply start it.
+
+# 
