@@ -5,4 +5,6 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="launch_activity">Return to app</string>
+    <string name="stop_location_updates_button_text">Stop</string>
 </resources>

@@ -13,7 +13,7 @@ async function initDB() {
   try {
     await sequelize.authenticate();
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    throw `Unable to connect to the database: ${error}`;
   }
 
   initModels(sequelize);
@@ -35,7 +35,7 @@ function getAllEvents(req, res) {
  */
 function addEvent(req, res) {
   let { user_id, type_id, latitude, longitude, comment } = req.body;
-  if (!(user_id && type_id && latitude && longitude)) {
+  if ([user_id, type_id, latitude, longitude].includes(undefined)) {
     res.status(200).json({ success: false });
     return;
   }
@@ -99,7 +99,7 @@ function deleteEventType(req, res) {
  */
 function connect(req, res) {
   let { device_id, name } = req.body;
-  if (!(device_id && name)) {
+  if (!(device_id != undefined && name)) {
     res.status(200).json({ success: false, id: null });
     return;
   }

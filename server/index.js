@@ -61,8 +61,10 @@ const address = () => {
   );
 };
 
-DB.initDB().then(() => {
-  app.listen(port, () => {
-    console.log(`\nServer listening on http://${address()}:${port}`);
-  });
-});
+DB.initDB()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`\nServer listening on http://${address()}:${port}`);
+    });
+  })
+  .catch((error) => console.error(error));
