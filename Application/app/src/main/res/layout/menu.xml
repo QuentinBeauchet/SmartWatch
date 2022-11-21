@@ -7,6 +7,7 @@
     android:background="#81A1FFE9"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
+    android:scrollbars="vertical"
     tools:deviceIds="wear">
 
 </androidx.wear.widget.WearableRecyclerView>

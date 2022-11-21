@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
         DEVICE_NAME = Settings.Global.getString(contentResolver, "device_name")
         DEVICE_ID = Settings.Secure.getString(contentResolver, "android_id")
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         requestPermissions()
