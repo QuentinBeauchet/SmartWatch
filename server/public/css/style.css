@@ -4,3 +4,9 @@
 header {
     height: 3vh;
 }
+.child{
+    display: inline-block;
+    margin:5px 0 0 5px;
+    flex-grow: 1;
+    width: calc(100% * (1/2) - 5px - 1px)
+}
