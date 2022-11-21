@@ -2,96 +2,75 @@ package com.example.application
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.Button
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.wear.widget.WearableLinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.application.databinding.ActivityMainBinding
+import com.example.application.databinding.MenuBinding
 import org.json.JSONObject
 
-
-class MainActivity : Activity() {
-
+class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var x = 0.0f
-    private var icons = java.util.ArrayList<Item>()
+    private lateinit var menuBinding: MenuBinding
+    private var positionX = 0.0f
     private var eventTypes = ArrayList<JSONObject>()
 
     companion object {
         private val LOG_TAG = MainActivity::class.java.simpleName
-        private const val REQUEST_COARSE_AND_FINE_LOCATION_RESULT_CODE = 101
-        private var DEVICE_NAME: String? = null
-        private var DEVICE_ID: String? = null
+        private lateinit var DEVICE_NAME: String
+        private lateinit var DEVICE_ID: String
     }
 
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         DEVICE_NAME = Settings.Global.getString(contentResolver, "device_name")
         DEVICE_ID = Settings.Secure.getString(contentResolver, "android_id")
 
-        Log.d(LOG_TAG, BuildConfig.API_URL)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        checkPermissions()
+        requestPermissions()
         connectToAPI()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        stopLocalisationService()
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ),
+            0
+        )
     }
 
-    private fun checkPermissions() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.d(LOG_TAG, "All required location permission are already granted")
-        } else {
-            Log.d(LOG_TAG, "ask for coarse and fine location permission")
-            ActivityCompat.requestPermissions(
-                this, arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ),
-                REQUEST_COARSE_AND_FINE_LOCATION_RESULT_CODE
-            )
+    private fun buildView(id: String) {
+        findViewById<Button>(R.id.start).setOnClickListener {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                putExtra("id", id)
+                startService(this)
+            }
         }
-    }
 
-    private fun startLocalisationService(id: String) {
-        Intent(this, UpdateLocation::class.java).also { intent ->
-            Log.d(LOG_TAG, "STARTING SERVICE")
-            intent.putExtra("USER_ID", id)
-            startService(intent)
-        }
-    }
-
-    private fun stopLocalisationService() {
-        Intent(this, UpdateLocation::class.java).also { intent ->
-            Log.d(LOG_TAG, "STOPPING SERVICE")
-            stopService(intent)
+        findViewById<Button>(R.id.stop).setOnClickListener {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+                startService(this)
+            }
         }
     }
 
@@ -105,7 +84,7 @@ class MainActivity : Activity() {
             Request.Method.POST, "${BuildConfig.API_URL}/connect", data,
             { response ->
                 Log.d(LOG_TAG, "Connexion successful from user $response")
-                startLocalisationService(response.get("id").toString())
+                buildView(response.get("id").toString())
                 getEventTypes(requestsQueue)
             }
         ) {
@@ -133,6 +112,12 @@ class MainActivity : Activity() {
                 }
 
                 requestsQueue.stop()
+
+                Log.d("Event", eventTypes.toString())
+                menuBinding = MenuBinding.inflate(layoutInflater)
+                val menu = Menu(menuBinding, eventTypes)
+                menu.createListOfItems(this)
+
             }
         ) { Log.w(LOG_TAG, "The API is not available for types request") }
 
@@ -143,38 +128,15 @@ class MainActivity : Activity() {
         val longOfDrag = 150
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                x = event.x
+                positionX = event.x
             }
             MotionEvent.ACTION_UP -> {
-                if (x - event.x >= longOfDrag) {
+                if (positionX - event.x >= longOfDrag) {
                     Log.d("Swipe", "LEFT")
-
-                    binding.wearable.layoutManager = WearableLinearLayoutManager(this)
-                    binding.wearable.setHasFixedSize(true)
-                    binding.wearable.isEdgeItemsCenteringEnabled = true
-
-                    // Ajout des chips
-                    icons.add(
-                        Item(
-                            "Police",
-                            ContextCompat.getDrawable(this, R.drawable.ic_launcher)
-                        )
-                    )
-                    icons.add(
-                        Item(
-                            "Accident",
-                            ContextCompat.getDrawable(this, R.drawable.ic_launcher)
-                        )
-                    )
-
-                    // Lien entre WearableRecyclerView et RecyclerView grace a l'adapter
-                    val adapter = ItemsAdapter(icons)
-                    binding.wearable.adapter = adapter
-
+                    setContentView(menuBinding.root)
                 }
             }
         }
         return true
     }
-
 }
