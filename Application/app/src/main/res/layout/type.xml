@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     android:theme="@style/Theme.MaterialComponents">
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/chip"
+        android:id="@+id/icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        app:iconEndPadding="2dp"
+        app:iconStartPadding="10dp"
+        app:chipIconTint="#ffffff"/>
 
-</RelativeLayout>
+</LinearLayout>
+

@@ -1,4 +1,4 @@
-package com.example.application
+package com.example.application.location
 
 import android.app.Application
 import android.app.NotificationChannel
@@ -13,6 +13,8 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.application.BuildConfig
+import com.example.application.R
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.example.application
+package com.example.application.location
 
 import android.Manifest
 import android.annotation.SuppressLint

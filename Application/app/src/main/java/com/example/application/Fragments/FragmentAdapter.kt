@@ -1,4 +1,4 @@
-package com.example.application
+package com.example.application.fragments
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -6,16 +6,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 
-class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+class FragmentAdapter(
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
+    private var userId: String,
+    private var types: String
+) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
-
-    private lateinit var userId : String
-    private lateinit var types : String
-
-    constructor(fragmentManager: FragmentManager, lifecycle: Lifecycle, userId: String, types : String) : this(fragmentManager,lifecycle) {
-        this.userId = userId
-        this.types = types
-    }
 
     override fun getItemCount(): Int {
         return 2

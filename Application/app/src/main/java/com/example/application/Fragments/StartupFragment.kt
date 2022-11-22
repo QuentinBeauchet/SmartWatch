@@ -1,4 +1,4 @@
-package com.example.application
+package com.example.application.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.application.location.LocationService
+import com.example.application.R
 
 class StartupFragment : Fragment() {
     private var userId: String? = null
