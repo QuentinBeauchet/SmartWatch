@@ -40,7 +40,7 @@ class Item(var id: Int, var text: String, var url: String) {
                 override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
                     val drawable: Drawable? = ResourcesCompat.getDrawable(
                         context.resources,
-                        R.drawable.ic_launcher_foreground,
+                        R.drawable.ic_launcher,
                         null
                     )
                     holder.bindingMenu.icon.chipIcon = drawable
