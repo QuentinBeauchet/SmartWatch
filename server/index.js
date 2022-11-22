@@ -21,7 +21,6 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.render('index.html');
-
 });
 
 /**************Events**************/
