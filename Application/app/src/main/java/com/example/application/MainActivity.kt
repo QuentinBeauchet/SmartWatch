@@ -17,6 +17,8 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.application.databinding.ActivityMainBinding
+import com.example.application.fragments.FragmentAdapter
+import me.relex.circleindicator.CircleIndicator3
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -103,5 +105,9 @@ class MainActivity : FragmentActivity() {
         viewPager2.visibility = View.VISIBLE
         viewPager2.adapter =
             FragmentAdapter(supportFragmentManager, lifecycle, USER_ID, types.toString())
+
+        val indicator = findViewById<CircleIndicator3>(R.id.indicator)
+        indicator.setViewPager(viewPager2)
+
     }
 }

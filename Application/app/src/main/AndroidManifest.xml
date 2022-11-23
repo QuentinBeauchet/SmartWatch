@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <application
-        android:name=".LocationService$LocationApp"
+        android:name=".location.LocationService$LocationApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,7 +25,7 @@
             android:name="com.google.android.wearable.standalone"
             android:value="true" />
 
-        <service android:name=".LocationService" android:foregroundServiceType="location" />
+        <service android:name=".location.LocationService" android:foregroundServiceType="location" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

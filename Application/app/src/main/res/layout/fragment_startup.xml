@@ -4,22 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".StartupFragment">
+    android:orientation="vertical"
+    tools:context=".fragments.StartupFragment">
 
-    <Button
-        android:id="@+id/start"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Start" />
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/stop"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gps_off"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/sleeping" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gps_on"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/signal"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Stop" />
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/start"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/stop"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Stop" />
+    </LinearLayout>
+
 
 </LinearLayout>
