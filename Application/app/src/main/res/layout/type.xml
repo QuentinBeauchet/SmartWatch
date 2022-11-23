@@ -7,7 +7,7 @@
     android:theme="@style/Theme.MaterialComponents">
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/icon"
+        android:id="@+id/type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"

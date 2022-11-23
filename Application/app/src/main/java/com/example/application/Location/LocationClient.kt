@@ -22,18 +22,7 @@ class LocationClient(
     @SuppressLint("MissingPermission")
     fun getLocationUpdates(interval: Long): Flow<Location> {
         return callbackFlow {
-            if (!hasLocationPermission()) {
-                throw Exception("Missing location permission")
-            }
-
-            val locationManager =
-                context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            val isNetworkEnabled =
-                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-            if (!isGpsEnabled && !isNetworkEnabled) {
-                throw Exception("GPS is disabled")
-            }
+            canMakeLocationRequest()
 
             val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, interval)
                 .setMaxUpdateAgeMillis(interval)
@@ -58,6 +47,38 @@ class LocationClient(
             awaitClose {
                 client.removeLocationUpdates(locationCallback)
             }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun makeLocationRequest(): Flow<Location> {
+        return callbackFlow {
+            canMakeLocationRequest()
+
+            client.lastLocation
+                .addOnSuccessListener { location ->
+                    if (location != null) {
+                        launch { send(location) }
+                    }
+                }
+
+            awaitClose {}
+        }
+    }
+
+
+    private fun canMakeLocationRequest() {
+        if (!hasLocationPermission()) {
+            throw Exception("Missing location permission")
+        }
+
+        val locationManager =
+            context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled =
+            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        if (!isGpsEnabled && !isNetworkEnabled) {
+            throw Exception("GPS is disabled")
         }
     }
 
