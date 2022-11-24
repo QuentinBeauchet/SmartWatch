@@ -1,15 +1,14 @@
 package com.example.application.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.application.BuildConfig
 import com.example.application.R
-import com.example.application.location.LocationService
 import com.google.android.material.slider.Slider
 
 class ParametersFragment : Fragment() {
@@ -31,7 +30,14 @@ class ParametersFragment : Fragment() {
             override fun onStopTrackingTouch(slider: Slider) {
                 val value = slider.value.toLong()
                 setText(nbr, value)
-                StartupFragment.mService?.setInterval(value)
+                if (StartupFragment.mService == null) {
+                    Toast.makeText(
+                        context,
+                        "Location Service was not initialized yet", Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    StartupFragment.mService?.setInterval(value)
+                }
             }
         })
 

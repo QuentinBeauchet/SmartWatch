@@ -87,7 +87,7 @@ class TypesAdapter(private var types: JSONArray) :
                 if (StartupFragment.mService == null) {
                     Toast.makeText(
                         context,
-                        "Location Service not initialized", Toast.LENGTH_SHORT
+                        "Location Service was not initialized yet", Toast.LENGTH_SHORT
                     ).show()
                 } else {
                     StartupFragment.mService?.postToApi(id, input.text.toString())

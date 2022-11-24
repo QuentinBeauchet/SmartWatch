@@ -13,6 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
+        android:textFontWeight="700"
+        android:textColor="#11122f"
         android:text="Location requests interval">
     </TextView>
 
@@ -32,6 +34,8 @@
         android:id="@+id/nbr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textFontWeight="700"
+        android:textColor="#11122f"
         android:textSize="20sp">
     </TextView>
 </LinearLayout>
