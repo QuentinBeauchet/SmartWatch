@@ -1,26 +1,20 @@
 const express = require("express");
 var bodyParser = require("body-parser");
-var mustacheExpress = require('mustache-express');
 
-const path = require("path");
 var os = require("os");
 const DB = require("./db");
 
 const app = express();
 const port = 3000;
 
-app.engine('html', mustacheExpress());
-
-app.set('view engine', 'html');
-app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 app.use("/api/assets", express.static("public/assets"));
 app.use(bodyParser.json());
 
 /********************************Routes********************************/
 
-app.get('/', (req, res) => {
-    res.render('index.html');
+app.get("/", (req, res) => {
+  res.sendFile("./public/index.html");
 });
 
 /**************Events**************/
