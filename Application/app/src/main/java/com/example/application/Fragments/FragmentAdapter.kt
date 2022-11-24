@@ -15,14 +15,14 @@ class FragmentAdapter(
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
-        return 2
+        return 3
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0) {
-            StartupFragment.newInstance(userId)
-        } else {
-            TypesFragment.newInstance(types)
+        return when (position) {
+            0 -> StartupFragment.newInstance(userId)
+            1 -> TypesFragment.newInstance(types)
+            else -> ParametersFragment.newInstance()
         }
     }
 

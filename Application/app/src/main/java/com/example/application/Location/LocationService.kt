@@ -17,10 +17,7 @@ import com.android.volley.toolbox.Volley
 import com.example.application.BuildConfig
 import com.example.application.R
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,7 +35,6 @@ class LocationService : Service() {
         const val ACTION_START = "ACTION_START"
         const val ACTION_STOP = "ACTION_STOP"
         private val LOG_TAG = LocationService::class.java.simpleName
-        private const val UPDATE_INTERVAL = 10000L
         private const val EVENT_TYPE = 0
         private lateinit var USER_ID: String
     }
@@ -76,7 +72,7 @@ class LocationService : Service() {
             .setOngoing(true)
 
         locationClient
-            .getLocationUpdates(UPDATE_INTERVAL)
+            .getLocationUpdates(BuildConfig.SLIDER_DEFAULT)
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
                 postToAPI(location.latitude, location.longitude, EVENT_TYPE, null)
@@ -97,6 +93,11 @@ class LocationService : Service() {
         super.onDestroy()
         serviceScope.cancel()
     }
+
+    fun setInterval(interval : Long){
+        locationClient.setInterval(interval)
+    }
+
 
     private fun postToAPI(latitude: Double, longitude: Double, type_id: Int, comment: String?) {
         val data = JSONObject()

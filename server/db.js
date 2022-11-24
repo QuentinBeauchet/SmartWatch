@@ -40,7 +40,7 @@ function addEvent(req, res) {
     return;
   }
 
-  Events.create({ user_id, type_id, latitude, longitude, comment, date: Date.now() }).then(() => {
+  Events.create({ user_id, type_id, latitude, longitude, comment: comment || null, date: Date.now() }).then(() => {
     res.status(200).json({ success: true });
   });
 }

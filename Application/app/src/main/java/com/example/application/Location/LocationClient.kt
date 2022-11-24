@@ -19,15 +19,12 @@ class LocationClient(
     private val client: FusedLocationProviderClient
 ) {
 
+    lateinit var setInterval: (interval: Long) -> Unit
+
     @SuppressLint("MissingPermission")
     fun getLocationUpdates(interval: Long): Flow<Location> {
         return callbackFlow {
             canMakeLocationRequest()
-
-            val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, interval)
-                .setMaxUpdateAgeMillis(interval)
-                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-                .build()
 
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(result: LocationResult) {
@@ -38,16 +35,29 @@ class LocationClient(
                 }
             }
 
-            client.requestLocationUpdates(
-                request,
-                locationCallback,
-                Looper.getMainLooper()
-            )
+            initLocationUpdates(interval, locationCallback)
+
+            this@LocationClient.setInterval =
+                { interval: Long -> initLocationUpdates(interval, locationCallback) }
 
             awaitClose {
                 client.removeLocationUpdates(locationCallback)
             }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun initLocationUpdates(interval: Long, locationCallback: LocationCallback) {
+        val newRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, interval * 1000)
+            .setMaxUpdateAgeMillis(interval * 1000)
+            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+            .build()
+
+        client.requestLocationUpdates(
+            newRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
     }
 
     @SuppressLint("MissingPermission")
