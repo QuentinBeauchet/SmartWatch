@@ -1,13 +1,14 @@
 const { Sequelize } = require("sequelize");
 const { initModels, Events, Types, Users } = require("./models/Models");
-
+const { table, user, password, host, port, dialect } = require("./config");
 /**
  * Initialize Sequelize and the models.
  */
 async function initDB() {
-  const sequelize = new Sequelize("watch", "root", "root", {
-    host: "localhost",
-    dialect: "mariadb",
+  const sequelize = new Sequelize(table, user, password, {
+    host,
+    port,
+    dialect,
   });
 
   try {

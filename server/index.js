@@ -56,7 +56,7 @@ const address = () => {
 
 DB.initDB()
   .then(() => {
-    app.listen(port, "0.0.0.0", () => {
+    app.listen(port, () => {
       console.log(`\nServer listening on http://${address()}:${port}`);
     });
   })

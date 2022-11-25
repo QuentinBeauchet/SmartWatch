@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `events`
 --
 
-CREATE TABLE IF NOT EXISTS `events` (
+CREATE TABLE `events` (
   `id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -51,7 +51,7 @@ INSERT IGNORE INTO `events` (`id`, `type_id`, `user_id`, `latitude`, `longitude`
 -- Structure de la table `types`
 --
 
-CREATE TABLE IF NOT EXISTS `types` (
+CREATE TABLE `types` (
   `id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   `icon` varchar(512) NOT NULL
@@ -73,7 +73,7 @@ INSERT IGNORE INTO `types` (`id`, `name`, `icon`) VALUES
 -- Structure de la table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `device_id` varchar(16) NOT NULL,
   `name` varchar(128) NOT NULL
@@ -96,21 +96,21 @@ INSERT IGNORE INTO `users` (`id`, `device_id`, `name`) VALUES
 -- Index pour la table `events`
 --
 ALTER TABLE `events`
-  ADD PRIMARY KEY IF NOT EXISTS (`id`),
-  ADD KEY IF NOT EXISTS `user_id` (`user_id`),
-  ADD KEY IF NOT EXISTS `type_id` (`type_id`) USING BTREE;
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `type_id` (`type_id`) USING BTREE;
 
 --
 -- Index pour la table `types`
 --
 ALTER TABLE `types`
-  ADD PRIMARY KEY IF NOT EXISTS (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY IF NOT EXISTS (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -141,10 +141,6 @@ ALTER TABLE `users`
 --
 -- Contraintes pour la table `events`
 --
-
-ALTER TABLE `events`
-  DROP CONSTRAINT IF EXISTS `events_ibfk_1`,
-  DROP CONSTRAINT IF EXISTS `events_ibfk_2`;
 
 ALTER TABLE `events`
   ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`),

@@ -16,7 +16,7 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "API_URL", "\"http://192.168.0.134:3000/api\""
+        buildConfigField "String", "API_URL", "\"https://smartwatch-production.up.railway.app/api\""
         buildConfigField "Long", "SLIDER_DEFAULT", "20L"
     }
 
