@@ -5,7 +5,7 @@ var os = require("os");
 const DB = require("./db");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 app.use("/api/assets", express.static("public/assets"));
@@ -56,7 +56,7 @@ const address = () => {
 
 DB.initDB()
   .then(() => {
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
       console.log(`\nServer listening on http://${address()}:${port}`);
     });
   })
