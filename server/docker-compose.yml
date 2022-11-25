@@ -2,7 +2,7 @@ version: "3"
 
 services:
   db:
-    image: "mysql"
+    image: "mariadb"
     container_name: "sw_db"
     ports:
       - "3306:3306"
@@ -11,7 +11,6 @@ services:
       MYSQL_DATABASE: "watch"
     volumes:
       - "sw_data:/var/lib/mysql"
-      - ./schema.sql:/docker-entrypoint-initdb.d/init.sql
 
   phpmyadmin:
     image: "phpmyadmin/phpmyadmin"

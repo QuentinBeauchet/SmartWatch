@@ -10,6 +10,10 @@ function initMap() {
   return map;
 }
 
+/**
+ * Add the buttons for the users.
+ * @param {*} users
+ */
 function addUsers(users) {
   let parent = document.getElementById("users");
   for (let { name } of users) {
@@ -21,6 +25,10 @@ function addUsers(users) {
   }
 }
 
+/**
+ * Add the buttons for the types.
+ * @param {*} types
+ */
 function addTypes(types) {
   let parent = document.getElementById("types");
   for (let { icon, name } of types) {
@@ -36,7 +44,14 @@ function addTypes(types) {
   }
 }
 
-function addEvents(map, events, users, types) {
+/**
+ * Create the markers and put them inside an object sorted by categories.
+ * @param {*} events
+ * @param {*} users
+ * @param {*} types
+ * @returns
+ */
+function createMarkers(events, users, types) {
   let groupedOverlays = {
     Types: {},
     Users: {},
@@ -61,19 +76,14 @@ function addEvents(map, events, users, types) {
     insertMarker(groupedOverlays, "Users", users_ids, user_id, marker);
   }
 
-  let controlLayer = L.control.groupedLayers(null, groupedOverlays, {
-    groupCheckboxes: true,
-  });
+  return groupedOverlays;
+}
 
-  for (let key of Object.keys(groupedOverlays)) {
-    for (let [type, cluster] of Object.entries(groupedOverlays[key])) {
-      let el = document.getElementById(`type_${type}`) || document.getElementById(`user_${type}`);
-      el.addEventListener("click", (e) =>
-        e.target.classList.contains("unselected") ? cluster.addTo(map) : cluster.remove()
-      );
-    }
-  }
-
+/**
+ * Add listeners to layers of the map so the buttons change aswell.
+ * @param {*} map
+ */
+function addListenersToLayers(map) {
   map.on("overlayadd", (e) => {
     let el = document.getElementById(`type_${e.name}`) || document.getElementById(`user_${e.name}`);
     el?.classList.remove("unselected");
@@ -82,6 +92,38 @@ function addEvents(map, events, users, types) {
     let el = document.getElementById(`type_${e.name}`) || document.getElementById(`user_${e.name}`);
     el?.classList.add("unselected");
   });
+}
+
+/**
+ * Add listeners to buttons around the Map
+ */
+function addListenersToButtons(map, groupedOverlays) {
+  for (let key of Object.keys(groupedOverlays)) {
+    for (let [type, cluster] of Object.entries(groupedOverlays[key])) {
+      let el = document.getElementById(`type_${type}`) || document.getElementById(`user_${type}`);
+      el.addEventListener("click", (e) =>
+        e.target.classList.contains("unselected") ? cluster.addTo(map) : cluster.remove()
+      );
+    }
+  }
+}
+
+/**
+ * Add the events to the map.
+ * @param {*} map
+ * @param {*} events
+ * @param {*} users
+ * @param {*} types
+ */
+function addEvents(map, events, users, types) {
+  let groupedOverlays = createMarkers(events, users, types);
+
+  let controlLayer = L.control.groupedLayers(null, groupedOverlays, {
+    groupCheckboxes: true,
+  });
+
+  addListenersToButtons(map, groupedOverlays);
+  addListenersToLayers(map);
 
   controlLayer.addTo(map);
 }

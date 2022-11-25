@@ -41,7 +41,7 @@ You can run the application from `Android Studio` in the emulator and everything
 
 > ERROR 2002 (HY000): Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)
 
-This error mean that the mysql container is not ready yet and you should wait about 10s.
+This error mean that the mariadb container is not ready yet and you should wait about 10s.
 
 #
 

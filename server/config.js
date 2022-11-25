@@ -4,5 +4,5 @@ module.exports = {
   password: process.env.MYSQLPASSWORD || "root",
   host: process.env.MYSQLHOST || "localhost",
   port: process.env.MYSQLPORT,
-  dialect: "mysql",
+  dialect: process.env.PORT ? "mysql" : "mariadb",
 };
