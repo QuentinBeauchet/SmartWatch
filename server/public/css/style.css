@@ -36,7 +36,7 @@ body {
 
 #users > ul {
   border-radius: 10px;
-  padding: 0.1rem 1rem 0.1rem 1rem;
+  padding: 0.3rem 1rem 0.3rem 1rem;
   margin: 0;
   font-weight: bold;
   white-space: nowrap;
@@ -67,6 +67,8 @@ body {
   max-width: 18rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
 }
 
 #types > ul > img {
