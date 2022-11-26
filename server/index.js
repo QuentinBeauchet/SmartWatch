@@ -5,7 +5,7 @@ var os = require("os");
 const DB = require("./db");
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 app.use("/api/assets", express.static("public/assets"));
