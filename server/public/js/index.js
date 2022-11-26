@@ -44,6 +44,79 @@ function addTypes(types) {
   }
 }
 
+function eventPerUser(events,users){
+  var eventPerUser = {};
+  events.forEach(even =>{
+    console.log(typeof even.user_id)
+    eventPerUser[even.user_id] = even.user_id in eventPerUser ?  eventPerUser[even.user_id]+1 : 1;
+  })
+
+  Object.keys(eventPerUser).forEach(id =>{
+    var user = users.find(x => x.id === parseInt(id))
+    eventPerUser[user.name] = eventPerUser[id];
+    delete eventPerUser[id];
+  })
+
+  return eventPerUser
+}
+
+function createPie(events,users){
+  var numberEventsPerUsers = eventPerUser(events,users)
+  var width = 450
+  var height = 450
+  var margin = 40
+  var radius = Math.min(width, height) / 2 - margin
+
+  var svg = d3.select("body")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  var color = d3.scaleOrdinal()
+      .domain(Object.keys(numberEventsPerUsers))
+      .range(d3.schemeSet2);
+
+  var pie = d3.pie()
+      .value(function(d) {return d.value; })
+  var data_ready = pie(d3.entries(numberEventsPerUsers))
+
+  var arcGenerator = d3.arc()
+      .innerRadius(0)
+      .outerRadius(radius)
+
+  svg
+      .selectAll('mySlices')
+      .data(data_ready)
+      .enter()
+      .append('path')
+      .attr('d', arcGenerator)
+      .attr('fill', function(d){return(color(d.data.key)) })
+      .attr("stroke", "black")
+      .style("stroke-width", "2px")
+      .style("opacity", 0.7)
+
+
+  svg
+      .selectAll('mySlices')
+      .data(data_ready)
+      .enter()
+      .append('text')
+      .text(function(d){ return "grp " + d.data.key})
+      .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
+      .style("text-anchor", "middle")
+      .style("font-size", 17)
+
+  svg.append("g")
+      .attr("transform", "translate(" + -80 + "," + 220 + ")")
+      .append("text")
+      .text("Number of events per user")
+      .attr("class", "title")
+
+}
+
+
 /**
  * Create the markers and put them inside an object sorted by categories.
  * @param {*} events
@@ -132,10 +205,10 @@ window.onload = async () => {
   let urls = ["/api/events", "api/users", "api/types"];
   let reqs = await Promise.all(urls.map((url) => fetch(url)));
   let [events, users, types] = await Promise.all(reqs.map((req) => req.json()));
-
   addUsers(users);
   addTypes(types);
 
   let map = initMap();
   addEvents(map, events, users, types);
+  createPie(events,users)
 };
