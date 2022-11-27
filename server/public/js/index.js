@@ -47,7 +47,6 @@ function addTypes(types) {
 function eventPerUser(events,users){
   var eventPerUser = {};
   events.forEach(even =>{
-    console.log(typeof even.user_id)
     eventPerUser[even.user_id] = even.user_id in eventPerUser ?  eventPerUser[even.user_id]+1 : 1;
   })
 
@@ -62,17 +61,21 @@ function eventPerUser(events,users){
 
 function createPie(events,users){
   var numberEventsPerUsers = eventPerUser(events,users)
-  var width = 450
-  var height = 450
-  var margin = 40
+  var width = 550
+  var height = 550
+  var margin = 100
+  var labelHeight = 18
   var radius = Math.min(width, height) / 2 - margin
 
   var svg = d3.select("body")
       .append("svg")
+      .style("border","2px solid black")
+      .style("margin-top","1em")
       .attr("width", width)
       .attr("height", height)
       .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+      .attr("transform", "translate(" + width / 3 + "," + height / 2 + ")")
+
 
   var color = d3.scaleOrdinal()
       .domain(Object.keys(numberEventsPerUsers))
@@ -98,22 +101,38 @@ function createPie(events,users){
       .style("opacity", 0.7)
 
 
-  svg
-      .selectAll('mySlices')
-      .data(data_ready)
-      .enter()
-      .append('text')
-      .text(function(d){ return "grp " + d.data.key})
-      .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
-      .style("text-anchor", "middle")
-      .style("font-size", 17)
-
   svg.append("g")
       .attr("transform", "translate(" + -80 + "," + 220 + ")")
       .append("text")
       .text("Number of events per user")
       .attr("class", "title")
 
+  const legend = svg
+      .append('g')
+      .attr('transform', `translate(${width/3},${-(height/2.5)})`);
+
+  legend
+      .selectAll(null)
+      .data(data_ready)
+      .enter()
+      .append('rect')
+      .attr('y', d => labelHeight * d.index * 1.8)
+      .attr('width', labelHeight)
+      .attr('height', labelHeight)
+      .attr('fill', d => color(d.data.key))
+      .attr('stroke', 'grey')
+      .style('stroke-width', '1px');
+
+  legend
+      .selectAll(null)
+      .data(data_ready)
+      .enter()
+      .append('text')
+      .text(d => d.data.key)
+      .attr('x', labelHeight * 1.2)
+      .attr('y', d => labelHeight * d.index * 1.8 + labelHeight)
+      .style('font-family', 'sans-serif')
+      .style('font-size', `${labelHeight}px`);
 }
 
 
