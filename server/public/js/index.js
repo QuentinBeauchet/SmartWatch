@@ -97,7 +97,7 @@ function createPie(events,users){
       .attr('d', arcGenerator)
       .attr('fill', function(d){return(color(d.data.key)) })
       .attr("stroke", "black")
-      .style("stroke-width", "2px")
+      .style("stroke-width", "1px")
       .style("opacity", 0.7)
 
 
