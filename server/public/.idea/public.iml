@@ -8,5 +8,7 @@
     <orderEntry type="library" name="leaflet-groupedlayercontrol" level="application" />
     <orderEntry type="library" name="d3" level="application" />
     <orderEntry type="library" name="d3.v4" level="application" />
+    <orderEntry type="library" name="d3.v4" level="application" />
+    <orderEntry type="library" name="d3" level="application" />
   </component>
 </module>
