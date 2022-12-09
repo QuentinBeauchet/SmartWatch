@@ -70,12 +70,11 @@ function numberEvents(events, types) {
 
     var tab = [];
     events.forEach(even => {
-        var t = tab.find(t => t.id===even.type_id)
+        var t = tab.find(t => t.name===allTypes[even.type_id])
         if(t) t.nbr+=1;
         else {
             var numberEvent = {};
             numberEvent["name"] = allTypes[even.type_id]
-            numberEvent["id"] = even.type_id;
             numberEvent["nbr"] = 1;
             tab.push(numberEvent)
         }
@@ -85,8 +84,7 @@ function numberEvents(events, types) {
 
 function createHistogram(events, types) {
     var data = numberEvents(events,types);
-
-    var margin = {top: 10, right: 30, bottom: 30, left: 40},
+    var margin = {top: 10, right: 30, bottom: 30, left: 70},
         width = 460 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
@@ -94,7 +92,7 @@ function createHistogram(events, types) {
     var svg = d3.select("#diagrams")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("height", height + margin.top + margin.bottom+30)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
@@ -103,15 +101,18 @@ function createHistogram(events, types) {
         .domain(data.map(d => {
             return d.name
         }))
-        .range([0, 100])
+        .range([0, width])
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x));
     var y = d3.scaleLinear()
         .range([height, 0]);
     y.domain([0, Math.max(...data.map(d => d.nbr))]);   // d3.hist has to be called before the Y axis obviously
-    svg.append("g")
-        .call(d3.axisLeft(y));
+    svg.append('g')
+        .attr('transform', `translate(0,0)`)
+        .call(d3.axisLeft(y)
+            .tickValues(y.ticks().filter(tick => Number.isInteger(tick)))
+            .tickFormat(d3.format('d')))
 
     // append the bar rectangles to the svg element
     svg.append("g")
@@ -122,7 +123,22 @@ function createHistogram(events, types) {
         .attr("x", d => x(d.name))
         .attr("y", d => y(d.nbr))
         .attr("height", d => y(0) - y(d.nbr))
-        .attr("width", x.bandwidth());
+        .attr("width", x.bandwidth())
+
+
+    svg.append("text")
+        .attr("transform", "translate(" + (width/2) + " ," + (height+40) + ")")
+        .style("text-anchor", "middle")
+        .text("Events");
+
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -(height/2))
+        .attr("y", -40)
+        .style("text-anchor", "middle")
+        .text("Number per event");
+
+
 }
 
 function createPie(events, users) {
