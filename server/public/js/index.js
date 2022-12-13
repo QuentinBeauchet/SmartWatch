@@ -377,7 +377,7 @@ $( document ).ready(async () =>  {
   let [events, users, types] = await Promise.all(reqs.map((req) => req.json()));
 
   // Creation de la map
-  var map = L.map('map').setView([43.7101717,7.2619517], 4);
+  var map = L.map('map').setView([0,0], 2);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
