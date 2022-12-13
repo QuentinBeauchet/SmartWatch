@@ -85,7 +85,7 @@ class StartupFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        activity?.unbindService(connection)
+        if(mBound) activity?.unbindService(connection)
         mBound = false
     }
 
